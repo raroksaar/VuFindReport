@@ -26,7 +26,9 @@
 
 
 /**
- * Set up util environment
+ * Set up util environment, this and solr connection protocol 
+ * borrowed from deletes.php written by
+ * Andrew Nagy and Demian Katz
  */
 require_once 'util.inc.php';        
 require_once 'sys/ConnectionManager.php';
@@ -57,8 +59,8 @@ $result = $solr->search('*:*', 'null', 'null', '0', '10');
 
 // This is an example of a query that specifies an index 
 // and a specific value, 
-//i.e., the solr document with an i.d. value of 3727
-//$result = $solr->search('id:3727');
+// i.e., the solr document with an i.d. value of 3727
+// $result = $solr->search('id:3727');
 $nTotal = $result['response']['numFound'];
 
 $nSets = ($nTotal/10) + 1; 
@@ -78,7 +80,7 @@ for ($i = 0; $i <= $nSets; $i++) {
     // first part of the query
 
     // 'fullrecord' refers to the raw MARC record, so a loop 
-    //  that specifies  $cite['fullrecord'] without any tabs 
+    // that specifies  $cite['fullrecord'] without any tabs 
     // or newlines creates a dump of MARC records
 
     // to write the results to a file use this 
