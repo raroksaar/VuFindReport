@@ -82,6 +82,8 @@ $result = $solr->search('id:' . $bibid, 'null', 'null', '0', '10');
 if ($result['response']['numFound'] > 0) {
     $cite = $result['response']['docs'][0];
     // the following are solr Marc fields that can be easily displayed
+    // error handling needs to still deal with cases when there is no 
+    // value in $cite['publisher'][0]
     echo $cite['id'];
     echo ". " . $cite['title'] . " \n";  
 	echo "\t" . $cite['publisher'][0] . $cite['publishDate'][0] . "\n" ;
@@ -91,7 +93,7 @@ if ($result['response']['numFound'] > 0) {
 	$r = new MarcRecord($cite['fullrecord'],"","","");
 	echo "\t" . $r->getFormat() . "\n";
         
-	// use subclassed verison to do more:
+    // use subclassed verison to do more:
     $MyR = new MyMarcRecord($cite['fullrecord'],"","","");
 
     // getFieldsByTag is a public function that is 
@@ -101,7 +103,8 @@ if ($result['response']['numFound'] > 0) {
 	   echo "\t" . "Subject: " . $field650;	
 	    }
 	echo "\t============\n";
-	$field852s = $MyR->getFieldsByTag("998");	
+    // holdings are in repeatable 852 fields in database being used
+	$field852s = $MyR->getFieldsByTag("852");	
 	foreach ($field852s  as $field852) {
 	   echo "\t" . "Holding: " .  $field852;	
 	    }
